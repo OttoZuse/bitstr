@@ -10,28 +10,28 @@ BitStr::BitStr(string file_read, string file_write) {
 BitStr::BitStr() {}
 
 void BitStr::read_offile() {
-  ifstream in(this -> file_read);
-  getline(in, this -> tmp1);
-  getline(in, this -> tmp2);
+  ifstream in(file_read);
+  getline(in, tmp1);
+  getline(in, tmp2);
 }
 void BitStr::read() {
   while (type_read != 'f' and type_read != 'c') {
-    cout << "[f]Читать из файла/[c]Читать из консоли" << endl;
+    cout << "[f]Читать из файла/[c]Читать из консоли ";
     cin >> type_read;
   }
   if (type_read == 'f')
-    read_file(this -> file_read);
+    read_file(file_read);
   else
     read_console();
 }
 void BitStr::read_file(string file_name) {
-  this -> file_read = file_name;
+  file_read = file_name;
   read_offile();
   if (!all_fine(tmp1) or !all_fine(tmp2))
     cout << "Ошибка типизации" << endl;
   else {
-    this -> arr1 = inter(tmp1, tmp1.length());
-    this -> arr2 = inter(tmp2, tmp2.length());
+    arr1 = inter(tmp1, tmp1.length());
+    arr2 = inter(tmp2, tmp2.length());
   }
 }
 void BitStr::read_console() {
@@ -92,11 +92,11 @@ void BitStr::bool_to_str() {
 }
 void BitStr::write_infile() {
   ofstream out(file_write);
-  out << this -> line << endl;
+  out << line << endl;
 }
 void BitStr::write() {
   while (type_write != 'f' and type_write != 'c') {
-    cout << "[f]Записывать в файл/[c]Вывод в консоль?" << endl;
+    cout << "[f]Записывать в файл/[c]Вывод в консоль? ";
     cin >> type_write;
   }
   if (type_write == 'f')
@@ -128,11 +128,11 @@ void BitStr::nulling() {
     arr1 = arr;
   else
     arr2 = arr;
-  this -> len = max;
+  len = max;
 }
 void BitStr::con() {
-  this -> arr_con = new bool[len];
-  for (int i = 0; i < this -> len; i++)
+  arr_con = new bool[len];
+  for (int i = 0; i < len; i++)
     arr_con[i] = arr1[i] * arr2[i];
   bool_to_str();
 }
