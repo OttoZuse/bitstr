@@ -1,7 +1,7 @@
 from bitclass import Bitstring
 
 bitstr = Bitstring()
-bitstr.file_read_name = "file_in"
+# bitstr.set_file_in("file_in")
 if bitstr.read_type == 'c':
     bitstr.console_read()
 elif bitstr.read_type == 'f':
