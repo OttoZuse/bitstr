@@ -33,7 +33,7 @@ class BitStr {
     void write_infile();
     void write();
     bool all_fine(string line);
-    bool* inter(string line, int len);
+    bool* booler(string line, int len);
     void con();
     void bool_to_str();
     void nulling(); 

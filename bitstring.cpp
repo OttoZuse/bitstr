@@ -30,8 +30,8 @@ void BitStr::read_file(string file_name) {
   if (!all_fine(tmp1) or !all_fine(tmp2))
     cout << "Ошибка типизации" << endl;
   else {
-    arr1 = inter(tmp1, tmp1.length());
-    arr2 = inter(tmp2, tmp2.length());
+    arr1 = booler(tmp1, tmp1.length());
+    arr2 = booler(tmp2, tmp2.length());
   }
 }
 void BitStr::read_console() {
@@ -40,14 +40,14 @@ void BitStr::read_console() {
   if (!all_fine(tmp1) or !all_fine(tmp2))
     cout << "Ошибка типизации" << endl;
   else {
-    arr1 = inter(tmp1, tmp1.length());
-    arr2 = inter(tmp2, tmp2.length());
+    arr1 = booler(tmp1, tmp1.length());
+    arr2 = booler(tmp2, tmp2.length());
   }
 }
 char BitStr::get_typer() { return type_read; }
 char BitStr::get_typew() { return type_write; }
 
-bool* BitStr::inter(string line, int len) {
+bool* BitStr::booler(string line, int len) {
   bool* arr = new bool[len];
   int count = 0;
   for (char i : line) {
