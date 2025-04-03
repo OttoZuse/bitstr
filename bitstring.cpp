@@ -1,51 +1,48 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
+// #include <fstream>
 #include "bitstr.h"
 using namespace std;
 
-BitStr::BitStr(string file_read, string file_write) {
-  this -> file_read = file_read;
-  this -> file_write = file_write;
+BitStr::BitStr(string str) {
+  this -> tmp = str;
 }
 BitStr::BitStr() {}
 
-void BitStr::read_offile() {
-  ifstream in(file_read);
-  getline(in, tmp1);
-  getline(in, tmp2);
-}
-void BitStr::read() {
-  while (type_read != 'f' and type_read != 'c') {
-    cout << "[f]Читать из файла/[c]Читать из консоли ";
-    cin >> type_read;
-  }
-  if (type_read == 'f')
-    read_file(file_read);
-  else
-    read_console();
-}
+// void BitStr::read_offile() {
+//   ifstream in(file_read);
+//   getline(in, tmp);
+// }
+// void BitStr::read() {
+//   while (type_read != 'f' and type_read != 'c') {
+//     cout << "[f]Читать из файла/[c]Читать из консоли ";
+//     cin >> type_read;
+//   }
+//   if (type_read == 'f')
+//     read_file(file_read);
+//   else
+//     read_console();
+// }
 void BitStr::read_file(string file_name) {
-  file_read = file_name;
-  read_offile();
-  if (!all_fine(tmp1) or !all_fine(tmp2))
+  ifstream in(file_name);
+  getline(in, tmp);
+  if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    arr1 = booler(tmp1, tmp1.length());
-    arr2 = booler(tmp2, tmp2.length());
+    binstr -> str = booler(tmp, tmp.length());
   }
 }
 void BitStr::read_console() {
-  cin >> tmp1;
-  cin >> tmp2;
-  if (!all_fine(tmp1) or !all_fine(tmp2))
+  cin >> tmp;
+  if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    arr1 = booler(tmp1, tmp1.length());
-    arr2 = booler(tmp2, tmp2.length());
+    arr = booler(tmp, tmp.length());
   }
 }
-char BitStr::get_typer() { return type_read; }
-char BitStr::get_typew() { return type_write; }
+// char BitStr::get_typer() { return type_read; }
+// char BitStr::get_typew() { return type_write; }
 
 bool* BitStr::booler(string line, int len) {
   bool* arr = new bool[len];
@@ -66,73 +63,65 @@ bool BitStr::all_fine(string line) {
   }
   return true;
 }
-void BitStr::print_array(bool* arr, int lent) {
-  for (int i = 0; i < lent; i++)
-    cout << arr[i];
-  cout << endl;
-}
-void BitStr::print() {
-  cout << line << endl;
-}
-// string BitStr::bool_to_str(bool* arr, int len) {
-//   string line;
-//   for (int i = 0; i < len; i++)
-//     if (arr[i] == 1)
-//       line += '1';
-//     else
-//       line += '0';
-//   return line;
+// void BitStr::print_array(bool* arr, int lent) {
+//   for (int i = 0; i < lent; i++)
+//     cout << arr[i];
+//   cout << endl;
 // }
-void BitStr::bool_to_str() {
+// void BitStr::print() {
+//   cout << binstr -> line << endl;
+// }
+string* BitStr::bool_to_str(bool* arr, int len) {
+  string* line;
   for (int i = 0; i < len; i++)
-    if (arr_con[i] == 1)
+    if (arr[i] == 1)
       line += '1';
     else
       line += '0';
+  return line;
 }
-void BitStr::write_infile() {
-  ofstream out(file_write);
-  out << line << endl;
+string BitStr::get_line(){
+  return *(binstr -> line);
 }
-void BitStr::write() {
-  while (type_write != 'f' and type_write != 'c') {
-    cout << "[f]Записывать в файл/[c]Вывод в консоль? ";
-    cin >> type_write;
-  }
-  if (type_write == 'f')
-    write_infile();
-  else
-    print();
-}
-void BitStr::nulling() {
-  int len1 = tmp1.length();
-  int len2 = tmp2.length();
-  bool* arr;
-  if (len1 < len2) {
-    min = len1;
-    max = len2;
-    arr = arr1;
-  } else {
-    min = len2;
-    max = len1;
-    arr = arr2;
-  }
-  arr_tmp = new bool[max];
-  for (int i = 0; i < min; i++)
-    arr_tmp[i] = arr[i];
-  for (int i = min; i < max; i++)
+// void BitStr::write_infile() {
+//   ofstream out(file_write);
+//   out << binstr -> line << endl;
+// }
+// void BitStr::write() {
+//   while (type_write != 'f' and type_write != 'c') {
+//     cout << "[f]Записывать в файл/[c]Вывод в консоль? ";
+//     cin >> type_write;
+//   }
+//   if (type_write == 'f')
+//     write_infile();
+//   else
+//     print();
+// }
+void BitStr::nulling(int secondLen){
+  bool* arr_tmp = new bool;
+  for (int i = 0; i < binstr -> len; i++)
+    arr_tmp[i] = binstr -> str[i];
+  for (int i = binstr -> len; i < secondLen; i++)
     arr_tmp[i] = 0;
-  arr = arr_tmp;
+  binstr -> str = arr_tmp;
+}
+binString* BitStr::get_binstr(){
+  return binstr;
+}
+void BitStr::operator=(binString* binstr){
+  this -> binstr = binstr;
+}
+binString* BitStr::operator*(BitStr Bit){
+  binstr -> str = new bool[binstr -> len];
+  for (int i = 0; i < maxlen; i++)
+    binstr -> str[i] = binstr -> str[i] * Bit.binstr -> str[i];
+  binstr -> line = bool_to_str(binstr -> str, maxlen);
+  return binstr;
+}
 
-  if (len1 == min)
-    arr1 = arr;
-  else
-    arr2 = arr;
-  len = max;
-}
-void BitStr::con() {
-  arr_con = new bool[len];
-  for (int i = 0; i < len; i++)
-    arr_con[i] = arr1[i] * arr2[i];
-  bool_to_str();
-}
+// void BitStr::con() {
+//   arr_con = new bool[len];
+//   for (int i = 0; i < len; i++)
+//     arr_con[i] = arr1[i] * arr2[i];
+//   bool_to_str();
+// }
