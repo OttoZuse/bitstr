@@ -91,21 +91,21 @@ void BitStr::nulling(int secondLen){
 int BitStr::get_len(){
   return binstr.len;
 }
-void BitStr::operator=(binString binstr2){
-  if (binstr2.str) {
-    binstr.str = binstr2.str;
-    binstr.line = binstr2.line;
-    binstr.len = binstr2.len;
-    // binstr.line = bool_to_str(binstr.str, binstr.len);
+void BitStr::operator=(BitStr* Bit2){
+  if (Bit2 -> get_str()) {
+    binstr.str = Bit2 -> get_str();
+    binstr.line = Bit2 -> get_line();
+    binstr.len = Bit2 -> get_len();
   }
 }
-binString BitStr::operator*(BitStr Bit){
+BitStr BitStr::operator*(BitStr Bit){
   bool* str = new bool[binstr.len];
   bool* str2 = Bit.get_str();
   for (int i = 0; i < binstr.len; i++)
     str[i] = binstr.str[i] * str2[i];
+  binstr.str = str;
   binstr.line = bool_to_str(str, binstr.len);
-  return binstr;
+  return *this;
 }
 bool* BitStr::get_str(){
   bool* str = new bool[binstr.len];

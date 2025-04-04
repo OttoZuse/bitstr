@@ -27,8 +27,8 @@ class BitStr {
     string get_line();
     bool* get_str();
     int get_len();
-    binString operator*(BitStr Bit);
-    void operator=(binString binstr);
+    BitStr operator*(BitStr Bit2);
+    void operator=(BitStr* Bit2);
     void nulling(int secondLen); 
     string bool_to_str(bool* arr, int len);
 };
