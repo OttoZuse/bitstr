@@ -1,49 +1,39 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-// #include <fstream>
 #include "bitstr.h"
 using namespace std;
 
 BitStr::BitStr(string str) {
-  this -> tmp = str;
+  binstr.str = booler(str, str.length());
+  binstr.line = str;
+  binstr.len = str.length();
 }
 BitStr::BitStr() {}
-
-// void BitStr::read_offile() {
-//   ifstream in(file_read);
-//   getline(in, tmp);
-// }
-// void BitStr::read() {
-//   while (type_read != 'f' and type_read != 'c') {
-//     cout << "[f]Читать из файла/[c]Читать из консоли ";
-//     cin >> type_read;
-//   }
-//   if (type_read == 'f')
-//     read_file(file_read);
-//   else
-//     read_console();
+// BitStr::~BitStr() {
+//   delete[] binstr.str;
 // }
 void BitStr::read_file(string file_name) {
+  string tmp;
   ifstream in(file_name);
   getline(in, tmp);
   if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    binstr -> str = booler(tmp, tmp.length());
+    binstr.str = booler(tmp, tmp.length());
   }
 }
 void BitStr::read_console() {
+  string tmp;
   cin >> tmp;
   if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    arr = booler(tmp, tmp.length());
+    binstr.line = tmp;
+    binstr.len = tmp.length();
+    binstr.str = booler(tmp, binstr.len);
   }
 }
-// char BitStr::get_typer() { return type_read; }
-// char BitStr::get_typew() { return type_write; }
-
 bool* BitStr::booler(string line, int len) {
   bool* arr = new bool[len];
   int count = 0;
@@ -63,16 +53,11 @@ bool BitStr::all_fine(string line) {
   }
   return true;
 }
-// void BitStr::print_array(bool* arr, int lent) {
-//   for (int i = 0; i < lent; i++)
-//     cout << arr[i];
-//   cout << endl;
-// }
-// void BitStr::print() {
-//   cout << binstr -> line << endl;
-// }
-string* BitStr::bool_to_str(bool* arr, int len) {
-  string* line;
+void BitStr::print() {
+  cout << binstr.line << endl;
+}
+string BitStr::bool_to_str(bool* arr, int len) {
+  string line;
   for (int i = 0; i < len; i++)
     if (arr[i] == 1)
       line += '1';
@@ -81,47 +66,50 @@ string* BitStr::bool_to_str(bool* arr, int len) {
   return line;
 }
 string BitStr::get_line(){
-  return *(binstr -> line);
+  return binstr.line;
 }
-// void BitStr::write_infile() {
-//   ofstream out(file_write);
-//   out << binstr -> line << endl;
-// }
-// void BitStr::write() {
-//   while (type_write != 'f' and type_write != 'c') {
-//     cout << "[f]Записывать в файл/[c]Вывод в консоль? ";
-//     cin >> type_write;
-//   }
-//   if (type_write == 'f')
-//     write_infile();
-//   else
-//     print();
-// }
+void BitStr::write_infile(string file_name) {
+  ofstream out(file_name);
+  out << binstr.line << endl;
+}
+void BitStr::write_console(){
+  cout << binstr.line << endl;
+}
 void BitStr::nulling(int secondLen){
-  bool* arr_tmp = new bool;
-  for (int i = 0; i < binstr -> len; i++)
-    arr_tmp[i] = binstr -> str[i];
-  for (int i = binstr -> len; i < secondLen; i++)
-    arr_tmp[i] = 0;
-  binstr -> str = arr_tmp;
+  if (secondLen > binstr.len) {
+    int maxlen = secondLen;
+    bool* arr_tmp = new bool[maxlen];
+    for (int i = 0; i < binstr.len; i++)
+      arr_tmp[i] = binstr.str[i];
+    for (int i = binstr.len; i < maxlen; i++)
+      arr_tmp[i] = 0;
+    delete[] binstr.str;
+    binstr.len = maxlen;
+    binstr.str = arr_tmp;
+  }
 }
-binString* BitStr::get_binstr(){
+int BitStr::get_len(){
+  return binstr.len;
+}
+void BitStr::operator=(binString binstr2){
+  if (binstr2.str) {
+    binstr.str = binstr2.str;
+    binstr.line = binstr2.line;
+    binstr.len = binstr2.len;
+    // binstr.line = bool_to_str(binstr.str, binstr.len);
+  }
+}
+binString BitStr::operator*(BitStr Bit){
+  bool* str = new bool[binstr.len];
+  bool* str2 = Bit.get_str();
+  for (int i = 0; i < binstr.len; i++)
+    str[i] = binstr.str[i] * str2[i];
+  binstr.line = bool_to_str(str, binstr.len);
   return binstr;
 }
-void BitStr::operator=(binString* binstr){
-  this -> binstr = binstr;
+bool* BitStr::get_str(){
+  bool* str = new bool[binstr.len];
+  for (int i = 0; i < binstr.len; i++)
+    str[i] = binstr.str[i];
+  return str;
 }
-binString* BitStr::operator*(BitStr Bit){
-  binstr -> str = new bool[binstr -> len];
-  for (int i = 0; i < maxlen; i++)
-    binstr -> str[i] = binstr -> str[i] * Bit.binstr -> str[i];
-  binstr -> line = bool_to_str(binstr -> str, maxlen);
-  return binstr;
-}
-
-// void BitStr::con() {
-//   arr_con = new bool[len];
-//   for (int i = 0; i < len; i++)
-//     arr_con[i] = arr1[i] * arr2[i];
-//   bool_to_str();
-// }
