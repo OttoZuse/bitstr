@@ -108,8 +108,9 @@ BitStr BitStr::operator*(BitStr Bit){
   return *this;
 }
 bool* BitStr::get_str(){
-  bool* str = new bool[binstr.len];
-  for (int i = 0; i < binstr.len; i++)
-    str[i] = binstr.str[i];
-  return str;
+  return binstr.str;
+  // bool* str = new bool[binstr.len];
+  // for (int i = 0; i < binstr.len; i++)
+  //   str[i] = binstr.str[i];
+  // return str;
 }
