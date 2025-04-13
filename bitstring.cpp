@@ -1,3 +1,4 @@
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,10 +7,10 @@ using namespace std;
 
 BitStr::BitStr(string str) {
   binstr.str = booler(str, str.length());
-  binstr.line = str;
   binstr.len = str.length();
 }
 BitStr::BitStr() {}
+// 
 // BitStr::~BitStr() {
 //   delete[] binstr.str;
 // }
@@ -29,7 +30,6 @@ void BitStr::read_console() {
   if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    binstr.line = tmp;
     binstr.len = tmp.length();
     binstr.str = booler(tmp, binstr.len);
   }
@@ -54,7 +54,7 @@ bool BitStr::all_fine(string line) {
   return true;
 }
 void BitStr::print() {
-  cout << binstr.line << endl;
+  cout << bool_to_str(binstr.str, binstr.len) << endl;
 }
 string BitStr::bool_to_str(bool* arr, int len) {
   string line;
@@ -65,15 +65,12 @@ string BitStr::bool_to_str(bool* arr, int len) {
       line += '0';
   return line;
 }
-string BitStr::get_line(){
-  return binstr.line;
-}
 void BitStr::write_infile(string file_name) {
   ofstream out(file_name);
-  out << binstr.line << endl;
+  out << bool_to_str(binstr.str, binstr.len) << endl;
 }
 void BitStr::write_console(){
-  cout << binstr.line << endl;
+  cout << bool_to_str(binstr.str, binstr.len)<< endl;
 }
 void BitStr::nulling(int secondLen){
   if (secondLen > binstr.len) {
@@ -91,26 +88,63 @@ void BitStr::nulling(int secondLen){
 int BitStr::get_len(){
   return binstr.len;
 }
-void BitStr::operator=(BitStr* Bit2){
-  if (Bit2 -> get_str()) {
-    binstr.str = Bit2 -> get_str();
-    binstr.line = Bit2 -> get_line();
-    binstr.len = Bit2 -> get_len();
+int BitStr::str_to_dec(bool* boolstr) {
+  int result = 0;
+  for (int i = binstr.len - 1; i >= 0; i--) {
+    result += boolstr[i] * step(2, binstr.len - i - 1);
   }
+  return result;
 }
-BitStr BitStr::operator*(BitStr Bit){
-  bool* str = new bool[binstr.len];
-  bool* str2 = Bit.get_str();
+int BitStr::step(int a, int b) {
+  int result = 1;
+  for (int i = 1; i <= b; i++)
+    result *= a;
+  return result;
+}
+BitStr& BitStr::operator=(const BitStr& Bit2){
+  // if (binstr.str != nullptr)
+  //   delete[] binstr.str;
+  if (this != &Bit2) {
+    binstr.len = Bit2.binstr.len;
+    binstr.str = new bool[binstr.len];
+    // for (int i = 0; i < binstr.len; i++)
+    //   binstr.str[i] = Bit2.binstr.str[i];
+    copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
+  }
+  return *this;
+}
+bool BitStr::operator<(BitStr Bit2) {
+  int dec1 = str_to_dec(binstr.str);
+  int dec2 = str_to_dec(Bit2.binstr.str);
+  if (dec1 < dec2)
+    return true;
+  else
+    return false;
+}
+bool BitStr::operator>(BitStr Bit2) {
+  int dec1 = str_to_dec(binstr.str);
+  int dec2 = str_to_dec(Bit2.binstr.str);
+  if (dec1 > dec2)
+    return true;
+  else
+    return false;
+}
+bool BitStr::operator==(BitStr Bit2) {
   for (int i = 0; i < binstr.len; i++)
-    str[i] = binstr.str[i] * str2[i];
-  binstr.str = str;
-  binstr.line = bool_to_str(str, binstr.len);
+    if (binstr.str[i] != Bit2.binstr.str[i])
+      return false;
+  return true;
+}
+BitStr BitStr::operator&(BitStr Bit){
+  if (binstr.len == Bit.binstr.len) {
+    bool* str = new bool[binstr.len];
+    bool* str2 = Bit.get_str();
+    for (int i = 0; i < binstr.len; i++)
+      str[i] = binstr.str[i] * str2[i];
+    binstr.str = str;
+  }
   return *this;
 }
 bool* BitStr::get_str(){
   return binstr.str;
-  // bool* str = new bool[binstr.len];
-  // for (int i = 0; i < binstr.len; i++)
-  //   str[i] = binstr.str[i];
-  // return str;
 }
