@@ -1,14 +1,11 @@
 from bitclass import Bitstring
 
-bitstr = Bitstring()
-# bitstr.set_file_in("file_in")
-if bitstr.read_type == 'c':
-    bitstr.console_read()
-elif bitstr.read_type == 'f':
-    bitstr.file_read()
-else:
-    print("ну и что?")
-    bitstr.stop()
-bitstr.nulling()
-bitstr.con()
-bitstr.write()
+bitstr1 = Bitstring()
+bitstr2 = Bitstring()
+bitstr1.set_bitstr("00111101")
+bitstr2.set_bitstr("110101100111")
+bitstr1.read()
+bitstr2.read()
+bitstr1.nulling(bitstr2.get_len())
+bitstr1.con(bitstr2)
+bitstr1.write()
