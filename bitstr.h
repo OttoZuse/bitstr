@@ -19,7 +19,6 @@ class BitStr {
     BitStr(string file_read);
     BitStr();
     // ~BitStr();
-    void print();
     void read_file(string file_name);
     void read_console();
     void read();
@@ -27,10 +26,9 @@ class BitStr {
     void write_console();
     void print_addr();
     bool* booler(string line, int len);
-    bool* get_str();
     int get_len();
-    BitStr operator&(BitStr Bit2);
-    BitStr& operator=(const BitStr& Bit2);
+    BitStr& operator&(const BitStr& Bit2);
+    void operator=(const BitStr& Bit2);
     bool operator==(BitStr Bit2);
     bool operator<(BitStr Bit2);
     bool operator>(BitStr Bit2);
