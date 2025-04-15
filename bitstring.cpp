@@ -9,8 +9,23 @@ BitStr::BitStr(string str) {
   binstr.str = booler(str, str.length());
   binstr.len = str.length();
 }
+BitStr::BitStr(const BitStr &Bit2) {
+  if (this != &Bit2) {
+    binstr.len = Bit2.binstr.len;
+    binstr.str = new bool[binstr.len];
+    copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
+  }
+}
+void BitStr::operator=(const BitStr& Bit2){
+  // if (binstr.str != nullptr)
+  //   delete[] binstr.str;
+  if (this != &Bit2) {
+    binstr.len = Bit2.binstr.len;
+    binstr.str = new bool[binstr.len];
+    copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
+  }
+}
 BitStr::BitStr() {}
-// 
 // BitStr::~BitStr() {
 //   delete[] binstr.str;
 // }
@@ -98,15 +113,6 @@ int BitStr::step(int a, int b) {
     result *= a;
   return result;
 }
-void BitStr::operator=(const BitStr& Bit2){
-  // if (binstr.str != nullptr)
-  //   delete[] binstr.str;
-  if (this != &Bit2) {
-    binstr.len = Bit2.binstr.len;
-    binstr.str = new bool[binstr.len];
-    copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
-  }
-}
 bool BitStr::operator<(BitStr Bit2) {
   int dec1 = str_to_dec(binstr.str);
   int dec2 = str_to_dec(Bit2.binstr.str);
@@ -130,7 +136,7 @@ bool BitStr::operator==(BitStr Bit2) {
   return true;
 }
 BitStr& BitStr::operator&(const BitStr& Bit) {
-  if (binstr.len != Bit.binstr.len)
+  if (binstr.len < Bit.binstr.len)
     nulling(Bit.binstr.len);
   bool* str = new bool[binstr.len];
   for (int i = 0; i < binstr.len; i++)

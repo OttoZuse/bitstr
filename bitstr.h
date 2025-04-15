@@ -17,6 +17,7 @@ class BitStr {
     string bool_to_str(bool* arr, int len);
   public:
     BitStr(string file_read);
+    BitStr(const BitStr &Bit2);
     BitStr();
     // ~BitStr();
     void read_file(string file_name);
