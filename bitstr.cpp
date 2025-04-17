@@ -7,7 +7,7 @@ int main () {
   setlocale(LC_ALL, "Russian");
   BitStr Bit1("01011011");
   BitStr Bit2("1010111111");
-  // Bit1 = Bit2;
+  Bit1 = Bit2;
   BitStr Bit3("1011010101111");
   BitStr Bit4 = Bit3;
   // Bit4 = Bit3;

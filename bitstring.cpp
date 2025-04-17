@@ -17,15 +17,15 @@ BitStr::BitStr(const BitStr &Bit2) {
   }
 }
 void BitStr::operator=(const BitStr& Bit2){
-  // if (binstr.str != nullptr)
-  //   delete[] binstr.str;
+  if (binstr.str != nullptr)
+    delete[] binstr.str;
   if (this != &Bit2) {
     binstr.len = Bit2.binstr.len;
     binstr.str = new bool[binstr.len];
     copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
   }
 }
-BitStr::BitStr() {}
+BitStr::BitStr() { binstr.str = nullptr; }
 // BitStr::~BitStr() {
 //   delete[] binstr.str;
 // }
