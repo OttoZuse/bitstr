@@ -36,7 +36,8 @@ void BitStr::read_file(string file_name) {
   if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
   else {
-    binstr.str = booler(tmp, tmp.length());
+    binstr.len = tmp.length();
+    binstr.str = booler(tmp, binstr.len);
   }
 }
 void BitStr::read_console() {
@@ -86,14 +87,13 @@ void BitStr::write_console(){
 }
 void BitStr::nulling(int secondLen){
   if (secondLen > binstr.len) {
-    int maxlen = secondLen;
-    bool* arr_tmp = new bool[maxlen];
+    bool* arr_tmp = new bool[secondLen];
     for (int i = 0; i < binstr.len; i++)
       arr_tmp[i] = binstr.str[i];
-    for (int i = binstr.len; i < maxlen; i++)
+    for (int i = binstr.len; i < secondLen; i++)
       arr_tmp[i] = 0;
     delete[] binstr.str;
-    binstr.len = maxlen;
+    binstr.len = secondLen;
     binstr.str = arr_tmp;
   }
 }
