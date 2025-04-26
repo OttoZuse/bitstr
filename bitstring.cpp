@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "bitstr.h"
 using namespace std;
 
@@ -10,35 +11,46 @@ BitStr::BitStr(string str) {
   binstr.len = str.length();
 }
 BitStr::BitStr(const BitStr &Bit2) {
-  if (this != &Bit2) {
+  if (this != &Bit2 and Bit2.binstr.str != nullptr) {
     binstr.len = Bit2.binstr.len;
     binstr.str = new bool[binstr.len];
     copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
   }
+  else
+    binstr.str = nullptr;
+}
+void BitStr::delete_str() {
+  delete [] binstr.str;
+  binstr.str = nullptr;
+  binstr.len = 0;
 }
 void BitStr::operator=(const BitStr& Bit2){
   if (binstr.str != nullptr)
     delete[] binstr.str;
-  if (this != &Bit2) {
+  if (this != &Bit2 and Bit2.binstr.str != nullptr) {
     binstr.len = Bit2.binstr.len;
     binstr.str = new bool[binstr.len];
     copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
   }
 }
-BitStr::BitStr() { binstr.str = nullptr; }
+BitStr::BitStr() { binstr.str = nullptr; binstr.len = 0; }
 // BitStr::~BitStr() {
 //   delete[] binstr.str;
 // }
 void BitStr::read_file(string file_name) {
   string tmp;
   ifstream in(file_name);
-  getline(in, tmp);
-  if (!all_fine(tmp))
-    cout << "Ошибка типизации" << endl;
-  else {
-    binstr.len = tmp.length();
-    binstr.str = booler(tmp, binstr.len);
+  if (in) {
+    getline(in, tmp);
+    if (!all_fine(tmp))
+      cout << "Ошибка типизации" << endl;
+    else {
+      binstr.len = tmp.length();
+      binstr.str = booler(tmp, binstr.len);
+    }
   }
+  else
+    cout << "Файл " << file_name << " не найден" << endl;
 }
 void BitStr::read_console() {
   string tmp;
@@ -80,13 +92,19 @@ string BitStr::bool_to_str(bool* arr, int len) {
 }
 void BitStr::write_infile(string file_name) {
   ofstream out(file_name);
-  out << bool_to_str(binstr.str, binstr.len) << endl;
+  if (binstr.str != nullptr)
+    out << bool_to_str(binstr.str, binstr.len) << endl;
+  else
+    out << "empty" << endl;
 }
 void BitStr::write_console(){
-  cout << bool_to_str(binstr.str, binstr.len)<< endl;
+  if (binstr.str != nullptr)
+    cout << bool_to_str(binstr.str, binstr.len) << endl;
+  else
+    cout << "empty" << endl;
 }
 void BitStr::nulling(int secondLen){
-  if (secondLen > binstr.len) {
+  if (secondLen > binstr.len and binstr.str != nullptr) {
     bool* arr_tmp = new bool[secondLen];
     for (int i = 0; i < binstr.len; i++)
       arr_tmp[i] = binstr.str[i];
@@ -101,11 +119,14 @@ int BitStr::get_len(){
   return binstr.len;
 }
 int BitStr::str_to_dec(bool* boolstr) {
-  int result = 0;
-  for (int i = binstr.len - 1; i >= 0; i--) {
-    result += boolstr[i] * step(2, binstr.len - i - 1);
+  if (boolstr != nullptr) {
+    int result = 0;
+    for (int i = binstr.len - 1; i >= 0; i--) {
+      result += boolstr[i] * step(2, binstr.len - i - 1);
+    }
+    return result;
   }
-  return result;
+  return -1;
 }
 int BitStr::step(int a, int b) {
   int result = 1;
@@ -116,18 +137,24 @@ int BitStr::step(int a, int b) {
 bool BitStr::operator<(BitStr Bit2) {
   int dec1 = str_to_dec(binstr.str);
   int dec2 = str_to_dec(Bit2.binstr.str);
-  if (dec1 < dec2)
+  if (dec1 == -1 or dec2 == -1) {
+    cout << "Строка не определена" << endl;
+    exit(0);
+  }
+  else if (dec1 < dec2)
     return true;
-  else
-    return false;
+  return false;
 }
 bool BitStr::operator>(BitStr Bit2) {
   int dec1 = str_to_dec(binstr.str);
   int dec2 = str_to_dec(Bit2.binstr.str);
-  if (dec1 > dec2)
+  if (dec1 == -1 or dec2 == -1) {
+    cout << "Строка не определена" << endl;
+    exit(0);
+  }
+  else if (dec1 > dec2)
     return true;
-  else
-    return false;
+  return false;
 }
 bool BitStr::operator==(BitStr Bit2) {
   for (int i = 0; i < binstr.len; i++)
@@ -136,13 +163,15 @@ bool BitStr::operator==(BitStr Bit2) {
   return true;
 }
 BitStr& BitStr::operator&(const BitStr& Bit) {
-  if (binstr.len < Bit.binstr.len)
-    nulling(Bit.binstr.len);
-  bool* str = new bool[binstr.len];
-  for (int i = 0; i < binstr.len; i++)
-    str[i] = binstr.str[i] * Bit.binstr.str[i];
-  delete[] binstr.str;
-  binstr.str = str;
+  if (binstr.str != nullptr and Bit.binstr.str != nullptr) {
+    if (binstr.len < Bit.binstr.len)
+      nulling(Bit.binstr.len);
+    bool* str = new bool[binstr.len];
+    for (int i = 0; i < binstr.len; i++)
+      str[i] = binstr.str[i] * Bit.binstr.str[i];
+    delete[] binstr.str;
+    binstr.str = str;
+  }
   return *this;
 }
 void BitStr::print_addr(){

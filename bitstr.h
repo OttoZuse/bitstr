@@ -26,6 +26,7 @@ class BitStr {
     void write_infile(string file_name);
     void write_console();
     void print_addr();
+    void delete_str();
     bool* booler(string line, int len);
     int get_len();
     BitStr& operator&(const BitStr& Bit2);
