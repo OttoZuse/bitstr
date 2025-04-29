@@ -157,6 +157,10 @@ bool BitStr::operator>(BitStr Bit2) {
   return false;
 }
 bool BitStr::operator==(BitStr Bit2) {
+  if (binstr.str == Bit2.binstr.str)
+    return true;
+  if (binstr.str == nullptr or Bit2.binstr.str == nullptr)
+    return false;
   for (int i = 0; i < binstr.len; i++)
     if (binstr.str[i] != Bit2.binstr.str[i])
       return false;
