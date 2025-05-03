@@ -158,11 +158,20 @@ bool BitStr::operator>(BitStr Bit2) {
 bool BitStr::operator==(BitStr Bit2) {
   if (binstr.str == Bit2.binstr.str)
     return true;
-  if (binstr.str == nullptr or Bit2.binstr.str == nullptr)
+  if (binstr.str == nullptr xor Bit2.binstr.str == nullptr)
     return false;
   for (int i = 0; i < binstr.len; i++)
     if (binstr.str[i] != Bit2.binstr.str[i])
       return false;
+  return true;
+}
+bool BitStr::operator!=(BitStr Bit2) {
+  if (binstr.str == Bit2.binstr.str or binstr.len != Bit2.binstr.len)
+    return true;
+  if (binstr.str == nullptr xor Bit2.binstr.str == nullptr)
+    return true;
+  if (str_to_dec(binstr.str) == str_to_dec(Bit2.binstr.str))
+    return false;
   return true;
 }
 BitStr& BitStr::operator&(const BitStr& Bit) {

@@ -25,8 +25,8 @@ int main () {
   BitStr Bitb("0011");
   Bita.write_console();
   Bitb.write_console();
-  if (Bita == Bitb)
-    std::cout << "== is work" << endl;
+  if (Bita != Bitb)
+    std::cout << "!= is work" << endl;
   if (Bita < Bitb)
     cout << "A < B" << endl;
   else if (Bita > Bitb)

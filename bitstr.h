@@ -32,6 +32,7 @@ class BitStr {
     BitStr& operator&(const BitStr& Bit2);
     void operator=(const BitStr& Bit2);
     bool operator==(BitStr Bit2);
+    bool operator!=(BitStr Bit2);
     bool operator<(BitStr Bit2);
     bool operator>(BitStr Bit2);
     void nulling(int secondLen);
