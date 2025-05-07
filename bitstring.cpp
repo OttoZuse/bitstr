@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include "bitstr.h"
 using namespace std;
 
@@ -50,14 +49,14 @@ void BitStr::read_file(string file_name, int num_str) {
     int index = -1;
     do {
         index++;
-        // cout << index << endl;
         getline(in, tmp);
     } while (index != num_str and !in.eof());
     if (!all_fine(tmp)) {
-      cout << length(tmp);
       cout << "Ошибка типизации" << endl;
     }
     else {
+      if (binstr.str != nullptr)
+        delete [] binstr.str;
       binstr.len = length(tmp);
       binstr.str = booler(tmp, binstr.len);
     }
@@ -66,7 +65,7 @@ void BitStr::read_file(string file_name, int num_str) {
     cout << "Файл " << file_name << " не найден" << endl;
 }
 void BitStr::read_console() {
-  char tmp[80];
+  string tmp;
   cin >> tmp;
   if (!all_fine(tmp))
     cout << "Ошибка типизации" << endl;
@@ -173,6 +172,8 @@ bool BitStr::operator==(BitStr Bit2) {
   if (binstr.str == Bit2.binstr.str)
     return true;
   if (binstr.str == nullptr xor Bit2.binstr.str == nullptr)
+    return false;
+  if (binstr.len != Bit2.binstr.len)
     return false;
   for (int i = 0; i < binstr.len; i++)
     if (binstr.str[i] != Bit2.binstr.str[i])
