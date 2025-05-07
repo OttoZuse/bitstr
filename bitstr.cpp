@@ -5,33 +5,31 @@ using namespace std;
 
 int main () {
   setlocale(LC_ALL, "Russian");
-  BitStr Bit1("01011011");
-  BitStr Bit2("1010111111");
-  Bit1 = Bit2;
+  BitStr Bit1;
+  BitStr Bit2;
   BitStr Bit3("1011010101111");
   BitStr Bit4 = Bit3;
   // Bit4 = Bit3;
+  Bit1.read_file("strio", 1);
+  Bit2.read_file("strio", 2);
   Bit1.write_console();
   Bit2.write_console();
-  Bit3.write_console();
-  Bit4.write_console();
-  // Bit1.nulling(Bit3.get_len());
-  // Bit2.nulling(Bit3.get_len());
-
-  Bit1 & Bit2 & Bit4;
+  // Bit3.write_console();
+  // Bit4.write_console();
+  Bit1 = Bit1 & Bit2;
   Bit1.write_console();
 
-  BitStr Bita("0111");
-  BitStr Bitb("0011");
-  Bita.write_console();
-  Bitb.write_console();
-  if (Bita != Bitb)
-    std::cout << "!= is work" << endl;
-  if (Bita < Bitb)
-    cout << "A < B" << endl;
-  else if (Bita > Bitb)
-    cout << "A > B" << endl;
-  else
-    cout << "No" << endl;
+  // BitStr Bita("0111");
+  // BitStr Bitb("0011");
+  // Bita.write_console();
+  // Bitb.write_console();
+  // if (Bita != Bitb)
+  //   std::cout << "!= is work" << endl;
+  // if (Bita < Bitb)
+  //   cout << "A < B" << endl;
+  // else if (Bita > Bitb)
+  //   cout << "A > B" << endl;
+  // else
+  //   cout << "No" << endl;
   return 0;
 }
