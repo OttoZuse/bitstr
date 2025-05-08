@@ -190,11 +190,11 @@ bool BitStr::operator!=(BitStr Bit2) {
   return true;
 }
 void BitStr::readdr(bool* str) {
-  if (binstr.str != nullptr) {
+  if (binstr.str != nullptr)
     delete[] binstr.str;
-    binstr.str = new bool[binstr.len];
-    copy(str, str + binstr.len, binstr.str);
-  }
+  binstr.str = new bool[binstr.len];
+  copy(str, str + binstr.len, binstr.str);
+  
 }
 BitStr BitStr::operator&(const BitStr& Bit) {
   BitStr new_Bit(*this);
