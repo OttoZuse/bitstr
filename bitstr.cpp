@@ -5,13 +5,11 @@ using namespace std;
 
 int main () {
   setlocale(LC_ALL, "Russian");
-  BitStr Bit1;
-  BitStr Bit2;
+  BitStr Bit1("11010111");
+  BitStr Bit2("0110111001");
   BitStr Bit3("1011010101111");
   BitStr Bit4 = Bit3;
   // Bit4 = Bit3;
-  Bit1.read_file("strio", 1);
-  Bit2.read_file("strio", 2);
   Bit1.write_console();
   Bit2.write_console();
   // Bit3.write_console();

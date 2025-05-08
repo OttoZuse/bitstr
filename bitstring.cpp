@@ -197,16 +197,17 @@ void BitStr::readdr(bool* str) {
   
 }
 BitStr BitStr::operator&(const BitStr& Bit) {
-  BitStr new_Bit(*this);
-  if (new_Bit.binstr.str != nullptr and Bit.binstr.str != nullptr) {
+  if (binstr.str != nullptr and Bit.binstr.str != nullptr) {
+    BitStr new_Bit(*this);
     new_Bit.nulling(Bit.binstr.len);
-    bool* str = new bool[binstr.len];
-    for (int i = 0; i < binstr.len; i++)
-      str[i] = binstr.str[i] * Bit.binstr.str[i];
+    bool* str = new bool[new_Bit.binstr.len];
+    for (int i = 0; i < new_Bit.binstr.len; i++)
+      str[i] = new_Bit.binstr.str[i] * Bit.binstr.str[i];
     new_Bit.readdr(str);
     delete[] str;
+    return new_Bit;
   }
-  return new_Bit;
+  return *this;
 }
 void BitStr::print_addr(){
   cout << binstr.str << endl;
