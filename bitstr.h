@@ -29,7 +29,7 @@ class BitStr {
     void write_console();
     void print_addr();
     void delete_str();
-    bool* booler(string line, int len);
+    bool* booler(string line);
     int get_len();
     BitStr operator&(const BitStr& Bit2);
     void operator=(const BitStr& Bit2);

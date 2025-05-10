@@ -5,8 +5,14 @@
 using namespace std;
 
 BitStr::BitStr(string str) {
-  binstr.str = booler(str, str.length());
-  binstr.len = str.length();
+  if (all_fine(str)) {
+    binstr.str = booler(str);
+    binstr.len = str.length();
+  }
+  else {
+    binstr.str = nullptr;
+    binstr.len = 0;
+  }
 }
 BitStr::BitStr(const BitStr &Bit2) {
   if (this != &Bit2 and Bit2.binstr.str != nullptr) {
@@ -14,8 +20,10 @@ BitStr::BitStr(const BitStr &Bit2) {
     binstr.str = new bool[binstr.len];
     copy(Bit2.binstr.str, Bit2.binstr.str + binstr.len, binstr.str);
   }
-  else
+  else {
     binstr.str = nullptr;
+    binstr.len = 0;
+  }
 }
 void BitStr::delete_str() {
   delete [] binstr.str;
@@ -58,7 +66,7 @@ void BitStr::read_file(string file_name, int num_str) {
       if (binstr.str != nullptr)
         delete [] binstr.str;
       binstr.len = length(tmp);
-      binstr.str = booler(tmp, binstr.len);
+      binstr.str = booler(tmp);
     }
   }
   else
@@ -71,11 +79,11 @@ void BitStr::read_console() {
     cout << "Ошибка типизации" << endl;
   else {
     binstr.len = length(tmp);
-    binstr.str = booler(tmp, binstr.len);
+    binstr.str = booler(tmp);
   }
 }
-bool* BitStr::booler(string line, int len) {
-  bool* arr = new bool[len];
+bool* BitStr::booler(string line) {
+  bool* arr = new bool[length(line)];
   int count = 0;
   for (char i : line) {
     if (i == '1')
@@ -194,7 +202,6 @@ void BitStr::readdr(bool* str) {
     delete[] binstr.str;
   binstr.str = new bool[binstr.len];
   copy(str, str + binstr.len, binstr.str);
-  
 }
 BitStr BitStr::operator&(const BitStr& Bit) {
   if (binstr.str != nullptr and Bit.binstr.str != nullptr) {
